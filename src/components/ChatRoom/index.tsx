@@ -1,8 +1,11 @@
 // ChatRoom.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, List } from 'antd';
 import ChatInput from '../ChatInput';
 import styles from './chatRoom.module.scss'; // Import the SCSS file as a module
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:4000');
 
 interface Message {
     id: number;
@@ -26,6 +29,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ chatRooms }) => {
 
     const addMessage = (text: string) => {
         if (selectedChat) {
+            console.log("ekel em");
+            
+            socket.emit('message', { sender: selectedChat?.name, message: text });
+            
 
             const newMessages = [...selectedChat.messages]
             const newMessage: Message = {
@@ -58,6 +65,18 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ chatRooms }) => {
     };
 
     console.log(roomMessages);
+
+    useEffect(() => {
+        socket.on('message', (data: { sender: string; message: string }) => {
+            console.log([data]);
+        });
+
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
 
     return (
         <Layout className={styles.chatRoomContainer}>
