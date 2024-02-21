@@ -1,0 +1,30 @@
+
+
+.sender {
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+  flex-wrap: wrap;
+
+  .sendButton {
+    background: var(--black600);
+    color: var(--white);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 0;
+    
+    &:hover {
+      background: var(--blue100);
+    }
+  }
+
+  .chatInput {
+    width: 70%;
+    margin-right: 10;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 800px;
+    min-width: 300px;
+  }
+}
