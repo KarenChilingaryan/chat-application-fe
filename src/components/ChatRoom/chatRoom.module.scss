@@ -1,0 +1,58 @@
+// ChatRoom.module.scss
+
+$primary-color: #1890ff;
+$layout-background: #a3a3a333;
+$content-background: linear-gradient(to bottom, #fdd5cb, #5027b1b9);
+
+.chatRoomContainer {
+  min-height: 100vh;
+  background: $layout-background !important;
+}
+
+.sider {
+  background: $content-background !important;
+  overflow: hidden;
+}
+
+.layout {
+  background: $layout-background !important;
+}
+
+.header {
+  background: $content-background;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.content {
+  margin: 16px 0 0 16px;
+  background: $content-background;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.chatListItem {
+  cursor: pointer;
+  padding: 8px 16px;
+  box-shadow: 0 4px 10px 0px #8b8b8b !important;
+  border: 0 !important;
+  border-radius: 0 0 16px 0;
+  opacity: 0.6;
+  justify-content: center !important;
+}
+
+.chatActiveListItem {
+  opacity: 1;
+}
+
+
+.chatRoom {
+  // Add any additional styling for the chat room messages
+}
+
+.message {
+  // Add any additional styling for individual messages
+}
