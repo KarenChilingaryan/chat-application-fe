@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Input, Button } from 'antd';
+import { ChatInputProps } from './chatInput.interface';
 
-interface ChatInputProps {
-    onSendMessage: (text: string) => void;
-}
+import styles from './chatInput.module.scss';
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     const [message, setMessage] = useState('');
@@ -16,23 +14,21 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
     };
 
     return (
-        <div style={{ marginTop: 20 }}>
-            <Input
+        <div className={styles.sender}>
+            <input
                 placeholder="Type a message..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                style={{ width: '70%', marginRight: 10 }}
+                className={styles.chatInput}
                 onKeyDown={(e) => {
-                    console.log(e)
                     if (e.code === "Enter" || e.code === "NumpadEnter") {
                         sendMessage()
                     }
-                }
-                }
+                }}
             />
-            <Button type="primary" onClick={sendMessage} >
+            <button className={styles.sendButton} onClick={sendMessage} >
                 Send
-            </Button>
+            </button>
         </div>
     );
 };
