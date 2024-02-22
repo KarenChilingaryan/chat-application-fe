@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import io, { Socket } from 'socket.io-client';
 import ChatInput from '../ChatInput';
 import { axiosInstance } from '../../utils/server';
+import { Message, User, UsersObject } from './chatRoom.interface';
 
 import styles from './chatRoom.module.scss';
-import { Message, User, UsersObject } from './chatRoom.interface';
 
 const ChatRoom: React.FC = () => {
     const [roomMessages, setRoomMessages] = useState<Message[]>([]);
