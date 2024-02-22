@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChatInputProps } from './type';
+import { ChatInputProps } from './chatInput.interface';
 
 import styles from './chatInput.module.scss';
 

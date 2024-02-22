@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import io, { Socket } from 'socket.io-client';
 import ChatInput from '../ChatInput';
 import { axiosInstance } from '../../utils/server';
-import { Message, User, UsersObject } from './type';
 
 import styles from './chatRoom.module.scss';
+import { Message, User, UsersObject } from './chatRoom.interface';
 
 const ChatRoom: React.FC = () => {
     const [roomMessages, setRoomMessages] = useState<Message[]>([]);
@@ -22,8 +22,23 @@ const ChatRoom: React.FC = () => {
         });
     };
 
-    const messageListener = (message: Message) => {
-        setRoomMessages([...roomMessages, message]);
+    const messageListener = async (message: Message) => {
+        let userData = usersByKeyId[message?.userId];
+        if (!userData) {
+            try {
+                const res = await axiosInstance.get(`/users/${message?.userId}`);
+                userData = res?.data;
+                setUsersByKeyId({
+                    ...usersByKeyId,
+                    [message?.userId]: res?.data,
+                })
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        if (userData) {
+            setRoomMessages([...roomMessages, message]);
+        }
     }
 
     const getAllMessages = async () => {
@@ -52,8 +67,9 @@ const ChatRoom: React.FC = () => {
 
     const addUser = async () => {
         const userData = {
-            name: userName,
             id: "id" + Math.random().toString(16),
+            name: userName,
+            color: '#' + Math.floor(Math.random() * 16777215).toString(16),
         }
         try {
             await axiosInstance.post(`/users`, userData)
@@ -117,9 +133,20 @@ const ChatRoom: React.FC = () => {
                         <div className={styles.chatRoom}>
                             {roomMessages?.map((message, index) => (
                                 <div key={index} className={`${styles.messageBox} ${user?.id === usersByKeyId[message.userId].id ? styles.myMessageBox : ''}`}>
-                                    {usersByKeyId[message.userId].id != user?.id && <p className={styles.userName}>
-                                        {usersByKeyId[message.userId].name}
-                                    </p>}<p className={styles.message}>
+                                    <div className={styles.user}>
+                                        {usersByKeyId[message.userId].id !== user?.id &&
+                                            <div
+                                                className={styles?.avatar}
+                                                style={{ background: usersByKeyId[message.userId].color }}
+                                            />
+                                        }
+                                        {usersByKeyId[message.userId].id !== user?.id &&
+                                            <p className={styles.userName}>
+                                                {usersByKeyId[message.userId].name}
+                                            </p>
+                                        }
+                                    </div>
+                                    <p className={styles.message}>
                                         {message.message}
                                     </p>
                                     <p className={styles.timestamp}>{
